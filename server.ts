@@ -9,8 +9,8 @@ import cors from "cors";
 // Add your routes here
 const setupApp = (client: Client): express.Application => {
   const app: express.Application = express();
-
-  app.use(cors());
+  // TODO: apply correct cors origin
+  app.use(cors({ origin: "*" }));
 
   app.use(express.json());
 

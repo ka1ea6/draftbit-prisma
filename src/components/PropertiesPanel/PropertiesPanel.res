@@ -6,7 +6,7 @@ module Collapsible = {
     let (collapsed, toggle) = React.useState(() => false)
 
     <section className="Collapsible">
-      <button className="Collapsible-button" onClick={_e => toggle(_ => !collapsed)}>
+      <button className="Collapsible-button" onClick={_e => toggle(isCollapsed => !isCollapsed)}>
         <span> {React.string(title)} </span> <span> {React.string(collapsed ? "+" : "-")} </span>
       </button>
       {collapsed ? React.null : <div className="Collapsible-content"> {children} </div>}
@@ -52,14 +52,14 @@ module ViewExamples = {
       }}
     </div>
   }
-}
+} 
 
 @genType @genType.as("PropertiesPanel") @react.component
 let make = () =>
   <aside className="PropertiesPanel">
     <Collapsible title="Load examples"> <ViewExamples /> </Collapsible>
     <Collapsible title="Margins & Padding">
-      <span> {React.string("TODO: build me!")} </span>
+      <span> <Prism /> </span>
     </Collapsible>
     <Collapsible title="Size"> <span> {React.string("example")} </span> </Collapsible>
   </aside>

@@ -1,6 +1,6 @@
 .PropertiesPanel {
   width: 320px;
-  background-color: #3d4b6c;
+  background-color: #28334d;
   height: 100vh;
 }
 
@@ -12,7 +12,7 @@
   width: 100%;
   display: flex;
   justify-content: space-between;
-  background-color: #28334d;
+  background-color: #3d4b6c;
   border: none;
   padding: 8px;
   color: white;

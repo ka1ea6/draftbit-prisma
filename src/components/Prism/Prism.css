@@ -1,0 +1,116 @@
+.prism-container {
+  /* border: 3px solid red; */
+  /* background-color: #29334d !important; */
+  border-radius: 1rem;
+  /* overflow: hidden; */
+  display: flex;
+  flex-direction: column;
+  font-size: 0.85rem;
+  /* padding: 0 0.5rem; */
+}
+
+.prism-top-row,
+.prism-middle-row,
+.prism-bottom-row {
+  background-color: #3d4b6c;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+}
+
+.prism-top-row,
+.prism-bottom-row {
+  padding: 0.5rem 0;
+}
+
+.prism-middle-row .input-group {
+  margin: 0 0.375rem;
+}
+
+.prism-inner-box {
+  border: 2px solid #29334d;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 0.375rem 0.5rem;
+}
+
+.prism-inner-box div {
+  display: flex;
+  justify-content: center;
+  /* padding: 0.25rem 0rem; */
+}
+
+.prism-inner-box div:nth-child(2) {
+  justify-content: space-between;
+  padding: 1rem 0;
+}
+
+input,
+select {
+  background-color: inherit;
+  border: none;
+  color: inherit;
+}
+input {
+  padding: 0.25rem 0.125rem;
+  padding-right: 0;
+  width: 25px;
+  text-align: right;
+}
+
+select {
+  padding: 0;
+  appearance: none;
+  text-indent: -1px;
+}
+
+select option {
+  border: none;
+}
+
+.input-group:has(.dirty-input:not(:focus)) {
+  border-bottom: 1px dashed #daae67;
+  padding: 0;
+  color: #fff;
+}
+input:focus,
+input:focus ~ select,
+select:focus,
+input ~ select:focus,
+.select-open {
+  background-color: #28334d;
+  outline: none;
+}
+
+.input-group:has(input:focus),
+.input-group:has(select:focus),
+.input-group:has(div.dropdown-open),
+.select-open {
+  background-color: #28334d;
+  border-radius: 3px;
+  outline: 1px solid #348fc3;
+}
+
+.input-group {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.25rem;
+  color: #adb9cd;
+  width: 60px;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}

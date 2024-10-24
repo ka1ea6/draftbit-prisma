@@ -3,3 +3,7 @@
   color: white;
   height: 100vh;
 }
+
+.hidden {
+  display: none;
+}
