@@ -2,17 +2,15 @@
 
 @react.component
 let make = () => {
-  let testStr2 = React.string("auto")
-
   let (marginState, marginDispatch) = React.useReducer(
-    Margin.State.reducer,
-    Margin.State.initialValue,
+    Dimension.State.reducer,
+    Dimension.State.initialValue,
   )
 
   <div className="prism-container">
     <div className="prism-top-row">
       <InputGroup
-        initialValue=Margin.State.initialValue.top.value
+        initialValue=Dimension.State.initialValue.top.value
         name="mt"
         onValueChange={e =>
           marginDispatch(
@@ -25,7 +23,7 @@ let make = () => {
     </div>
     <div className="prism-middle-row">
       <InputGroup
-        initialValue=Margin.State.initialValue.left.value
+        initialValue=Dimension.State.initialValue.left.value
         name="ml"
         onValueChange={e =>
           marginDispatch(
@@ -35,13 +33,9 @@ let make = () => {
         unit={marginState.left.unit}
         onUnitChange={option => marginDispatch(AlterValue(Left, marginState.left.value, option))}
       />
-      <div className="prism-inner-box">
-        <div> <span> testStr2 </span> </div>
-        <div> <span> testStr2 </span> <span> testStr2 </span> </div>
-        <div> <span> testStr2 </span> </div>
-      </div>
+      <div className="prism-inner-box"> <Padding /> </div>
       <InputGroup
-        initialValue=Margin.State.initialValue.right.value
+        initialValue=Dimension.State.initialValue.right.value
         name="mr"
         onValueChange={e =>
           marginDispatch(
@@ -54,7 +48,7 @@ let make = () => {
     </div>
     <div className="prism-bottom-row">
       <InputGroup
-        initialValue=Margin.State.initialValue.bottom.value
+        initialValue=Dimension.State.initialValue.bottom.value
         name="mb"
         onValueChange={e =>
           marginDispatch(

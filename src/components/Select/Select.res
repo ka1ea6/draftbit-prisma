@@ -12,7 +12,7 @@ let make = (
   ~options: array<selectOption>,
   ~isSelectOpen: bool,
   ~setIsSelectOpen: (bool => bool) => unit,
-  ~unit: Margin.State.measurementUnit,
+  ~unit: Dimension.State.measurementUnit,
   ~onUnitChange,
 ) => {
   // React.useEffect(() => {
@@ -38,20 +38,20 @@ let make = (
     </div>
     <div className="dropdown-container">
       <button onClick={_ => setIsSelectOpen(_ => true)}>
-        {unit->Margin.State.measurementUnitToString->React.string}
+        {unit->Dimension.State.measurementUnitToString->React.string}
       </button>
       <ul className={isSelectOpen ? "dropdown-open" : "dropdown-close"}>
-        {Margin.State.allUnits
+        {Dimension.State.allUnits
         ->Js.Array2.map(option =>
           <li
-            value={option->Margin.State.measurementUnitToString}
-            key={option->Margin.State.measurementUnitToString}>
+            value={option->Dimension.State.measurementUnitToString}
+            key={option->Dimension.State.measurementUnitToString}>
             <button
               onClick={_e => {
                 onUnitChange(option)
                 setIsSelectOpen(_ => false)
               }}>
-              {React.string(option->Margin.State.measurementUnitToString)}
+              {React.string(option->Dimension.State.measurementUnitToString)}
             </button>
           </li>
         )

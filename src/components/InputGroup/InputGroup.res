@@ -1,11 +1,11 @@
 @react.component
 let make = (
   ~name: string,
-  ~value: Margin.State.measurementValue,
+  ~value: Dimension.State.measurementValue,
   ~onValueChange,
-  ~unit: Margin.State.measurementUnit,
+  ~unit: Dimension.State.measurementUnit,
   ~onUnitChange,
-  ~initialValue: Margin.State.measurementValue,
+  ~initialValue: Dimension.State.measurementValue,
 ) => {
   let (isSelectOpen, setIsSelectOpen) = React.useState(() => false)
   let handleFocus = event => {
@@ -16,8 +16,9 @@ let make = (
     <input
       name
       type_="number"
+      placeholder="auto"
       className={initialValue == value ? "" : "dirty-input"}
-      value={value->Belt.Int.toString}
+      value={value != 0 ? value->Belt.Int.toString : ""}
       onInput={e => onValueChange(e)}
       onFocus={handleFocus}
     />

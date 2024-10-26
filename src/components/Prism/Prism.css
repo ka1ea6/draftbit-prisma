@@ -1,6 +1,4 @@
 .prism-container {
-  /* border: 3px solid red; */
-  /* background-color: #29334d !important; */
   border-radius: 1rem;
   /* overflow: hidden; */
   display: flex;
@@ -34,7 +32,12 @@
   flex-grow: 1;
   display: flex;
   flex-direction: column;
+  row-gap: 0.625rem;
   padding: 0.375rem 0.5rem;
+}
+
+.prism-inner-box .input-group {
+  margin: 0
 }
 
 .prism-inner-box div {
@@ -45,7 +48,7 @@
 
 .prism-inner-box div:nth-child(2) {
   justify-content: space-between;
-  padding: 1rem 0;
+  /* padding: 1rem 0; */
 }
 
 input,
@@ -57,7 +60,7 @@ select {
 input {
   padding: 0.25rem 0.125rem;
   padding-right: 0;
-  width: 25px;
+  width: 30px;
   text-align: right;
 }
 
@@ -101,6 +104,10 @@ input ~ select:focus,
   gap: 0.25rem;
   color: #adb9cd;
   width: 60px;
+}
+
+.input-group > input::placeholder {
+  color: #adb9cd;
 }
 
 /* Chrome, Safari, Edge, Opera */
