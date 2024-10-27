@@ -22,17 +22,7 @@ let make = (
       onInput={e => onValueChange(e)}
       onFocus={handleFocus}
     />
-    <Select
-      options={[
-        {displayName: "pt", value: "pt"},
-        {displayName: "px", value: "px"},
-        {displayName: "pm", value: "pm"},
-      ]}
-      isSelectOpen
-      setIsSelectOpen
-      unit
-      onUnitChange
-    />
+    <Select name isSelectOpen setIsSelectOpen unit onUnitChange />
     // <select>
     //   <option>{React.string("pt")}</option>
     //   <option>{React.string("px")}</option>

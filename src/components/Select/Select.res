@@ -9,34 +9,45 @@ type selectOption = {
 
 @react.component
 let make = (
-  ~options: array<selectOption>,
+  ~name: string,
   ~isSelectOpen: bool,
   ~setIsSelectOpen: (bool => bool) => unit,
   ~unit: Dimension.State.measurementUnit,
   ~onUnitChange,
 ) => {
-  // React.useEffect(() => {
-  //   let handleClick = _ => {
-  //     setIsSelectOpen(_ => false)
-  //   }
+  React.useEffect(() => {
+    let handleClick = e => {
+      let target = e->Webapi.Dom.Event.target
+      let closestDropdownContainer =
+        target
+        ->Webapi.Dom.EventTarget.unsafeAsElement
+        ->Webapi.Dom.Element.closest(`.dropdown-container#${name}`)
 
-  //   Webapi.Dom.window->Webapi.Dom.Window.addEventListener("click", handleClick)
-  //   Some(() => Webapi.Dom.window->Webapi.Dom.Window.removeEventListener("click", handleClick))
-  // })
+      switch closestDropdownContainer {
+      | Some(element) => Js.Console.log(element)
+      | None => setIsSelectOpen(_ => false)
+      }
+    }
+
+    Webapi.Dom.window->Webapi.Dom.Window.addEventListener("click", handleClick)
+    Some(() => Webapi.Dom.window->Webapi.Dom.Window.removeEventListener("click", handleClick))
+  })
 
   <div>
     <div>
       <select className="hidden">
-        {options
+        {Dimension.State.allUnits
         ->Js.Array2.map(option =>
-          <option value=option.value key={option.value}>
-            {React.string(option.displayName)}
+          <option
+            value={option->Dimension.State.measurementUnitToString}
+            key={option->Dimension.State.measurementUnitToString}>
+            {option->Dimension.State.measurementUnitToString->React.string}
           </option>
         )
         ->React.array}
       </select>
     </div>
-    <div className="dropdown-container">
+    <div className="dropdown-container" id=name>
       <button onClick={_ => setIsSelectOpen(_ => true)}>
         {unit->Dimension.State.measurementUnitToString->React.string}
       </button>

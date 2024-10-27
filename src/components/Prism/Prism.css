@@ -87,6 +87,10 @@ input ~ select:focus,
   background-color: #28334d;
   outline: none;
 }
+.input-group {
+  transition: all .1s ease-in-out;
+  /* transition: border  .5s ease-in-out; */
+}
 
 .input-group:has(input:focus),
 .input-group:has(select:focus),
