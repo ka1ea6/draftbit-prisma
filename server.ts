@@ -14,9 +14,19 @@ const setupApp = (client: Client): express.Application => {
 
   app.use(express.json());
 
-  app.get("/examples", async (_req, res) => {
-    const { rows } = await client.query(`SELECT * FROM example_table`);
+  app.get("/dimensions", async (_req, res) => {
+    const { rows } = await client.query(`SELECT * FROM margin_dimensions`);
     res.json(rows);
+  });
+
+  app.post("/dimensions", async (req, res) => {
+    const unit = req.body.unit;
+
+    const { rows } = await client.query(`SELECT * FROM units WHERE name = $1`, [
+      unit,
+    ]);
+    console.log("rows", rows);
+    res.end();
   });
 
   return app;
@@ -45,7 +55,7 @@ const connect = async (): Promise<Client> => {
 const main = async () => {
   const client = await connect();
   const app = setupApp(client);
-  const port = parseInt(process.env.SERVER_PORT);
+  const port = parseInt(process.env.SERVER_PORT!);
   app.listen(port, () => {
     console.log(
       `Draftbit Coding Challenge is running at http://localhost:${port}/`
