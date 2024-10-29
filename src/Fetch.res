@@ -24,22 +24,23 @@ type options = {headers: Js.Dict.t<string>, method: string, body: option<string>
 @val
 external fetch: (string, options) => Js.Promise.t<Response.t> = "fetch"
 
-let base_url ="http://localhost:12346"
+let base_url = "http://localhost:12346"
 
-let fetchJson = (~headers=Js.Dict.empty(), ~method=GET, ~body=?, url: string): Js.Promise.t<Js.Json.t> =>
-{
+let fetchJson = (~headers=Js.Dict.empty(), ~method=GET, ~body=?, url: string): Js.Promise.t<
+  Js.Json.t,
+> => {
   let methodToString = switch method {
-    |GET => "GET"
-    |POST => "POST"
-    |PUT => "PUT"
-    |PATCH => "PATCH"
-    |DELETE => "DELETE"
+  | GET => "GET"
+  | POST => "POST"
+  | PUT => "PUT"
+  | PATCH => "PATCH"
+  | DELETE => "DELETE"
   }
 
   let init = {
     method: methodToString,
     headers: headers,
-    body: body 
+    body: body,
   }
   fetch(url, init) |> Js.Promise.then_(res =>
     if !Response.ok(res) {

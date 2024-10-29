@@ -4,8 +4,8 @@ import express from "express";
 import waitOn from "wait-on";
 import onExit from "signal-exit";
 import cors from "cors";
-import { insertIntoTable } from "./db-helpers";
-import { mapDimensions } from "./utils";
+import { insertIntoTable, updateTable } from "./db-helpers";
+import { Dimensions, getChangedDimensions, mapDimensions } from "./utils";
 
 // Add your routes here
 const setupApp = (client: Client): express.Application => {
@@ -122,14 +122,31 @@ const setupApp = (client: Client): express.Application => {
     }
   });
 
-  app.post("/dimensions", async (req, res) => {
-    const unit = req.body.unit;
+  app.patch("/items/:itemId/dimensions", async (req, res) => {
+    const itemId = req.params.itemId;
+    if (!itemId || isNaN(parseInt(itemId)))
+      return res.status(400).json({
+        status: 400,
+        ok: false,
+        statusText: "failure",
+        message: "invalid item id",
+      });
 
-    const { rows } = await client.query(`SELECT * FROM units WHERE name = $1`, [
-      unit,
-    ]);
-    console.log("rows", rows);
-    res.end();
+    const changed = getChangedDimensions(req.body);
+
+    const {
+      rows: [item],
+    } = await updateTable({
+      client,
+      columns: ["name"],
+      returning: ["*"],
+      tableName: "dimensions",
+      values: changed,
+    });
+
+    console.log(item);
+
+    return res.status(200).json(JSON.stringify(item));
   });
 
   return app;

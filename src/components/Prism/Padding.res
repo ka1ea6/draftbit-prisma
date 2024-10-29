@@ -1,14 +1,12 @@
 @react.component
-let make = () => {
-  let (paddingState, paddingDispatch) = React.useReducer(
-    Dimension.State.reducer,
-    Dimension.State.initialValue,
-  )
-
+let make = (
+  ~paddingState: Dimension.State.t,
+  ~paddingDispatch: Dimension.State.actions => unit,
+) => {
   <>
     <div>
       <InputGroup
-        initialValue=Dimension.State.initialValue.top.value
+        remoteSaved=paddingState.top.remoteSaved
         name="pt"
         onValueChange={e =>
           paddingDispatch(
@@ -21,7 +19,7 @@ let make = () => {
     </div>
     <div>
       <InputGroup
-        initialValue=Dimension.State.initialValue.left.value
+        remoteSaved=paddingState.left.remoteSaved
         name="pl"
         onValueChange={e =>
           paddingDispatch(
@@ -32,7 +30,7 @@ let make = () => {
         onUnitChange={option => paddingDispatch(AlterValue(Left, paddingState.left.value, option))}
       />
       <InputGroup
-        initialValue=Dimension.State.initialValue.right.value
+        remoteSaved=paddingState.right.remoteSaved
         name="pr"
         onValueChange={e =>
           paddingDispatch(
@@ -46,7 +44,7 @@ let make = () => {
     </div>
     <div>
       <InputGroup
-        initialValue=Dimension.State.initialValue.right.value
+        remoteSaved=paddingState.bottom.remoteSaved
         name="pb"
         onValueChange={e =>
           paddingDispatch(

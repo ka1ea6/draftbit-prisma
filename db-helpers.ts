@@ -23,3 +23,31 @@ export const insertIntoTable = async ({
   );
   return res;
 };
+export const updateTable = async ({
+  client,
+  tableName,
+  columns,
+  values,
+  returning,
+}: {
+  client: Client;
+  tableName: string;
+  columns: string[];
+  values: object;
+  returning: string[] | null;
+}) => {
+  const valueKeys = Object.keys(values).map(
+    (item, idx) => `${item} = $${idx + 1} `
+  );
+  const mappedValued = Object.values(values);
+
+  const res = await client.query(
+    `
+      UPDATE  ${tableName} SET ${valueKeys.join(",")} ${
+      returning ? `RETURNING ${returning.join(",")}` : ""
+    };
+      `,
+    [...mappedValued]
+  );
+  return res;
+};

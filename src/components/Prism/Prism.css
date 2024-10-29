@@ -37,7 +37,7 @@
 }
 
 .prism-inner-box .input-group {
-  margin: 0
+  margin: 0;
 }
 
 .prism-inner-box div {
@@ -47,7 +47,7 @@
 }
 
 .prism-inner-box div:nth-child(2) {
-  justify-content: space-between;
+  /* justify-content: space-between; */
   /* padding: 1rem 0; */
 }
 
@@ -88,7 +88,7 @@ input ~ select:focus,
   outline: none;
 }
 .input-group {
-  transition: all .1s ease-in-out;
+  transition: all 0.1s ease-in-out;
   /* transition: border  .5s ease-in-out; */
 }
 
@@ -112,6 +112,7 @@ input ~ select:focus,
 
 .input-group > input::placeholder {
   color: #adb9cd;
+  text-align: right;
 }
 
 /* Chrome, Safari, Edge, Opera */
@@ -124,4 +125,24 @@ input::-webkit-inner-spin-button {
 /* Firefox */
 input[type="number"] {
   -moz-appearance: textfield;
+}
+
+.prism-outer-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.save-btn {
+  padding: 0.25rem 0.85rem;
+  background-color: #6887cf;
+  color: #fff;
+  border-radius: 10px;
+
+  border: none;
+}
+
+.save-btn:hover {
+  background-color: #90a6da;
+  cursor: pointer;
 }

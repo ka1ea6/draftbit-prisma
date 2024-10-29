@@ -6,6 +6,7 @@ module State = {
   type measurement = {
     value: measurementValue,
     unit: measurementUnit,
+    remoteSaved: bool,
   }
 
   type t = {
@@ -15,25 +16,31 @@ module State = {
     left: measurement,
   }
 
-  type actions = AlterValue(side, measurementValue, measurementUnit) | Initialize(t)
+  type actions = AlterValue(side, measurementValue, measurementUnit) | Initialize(t) | SaveRemote
 
   let initialValue = {
-    top: {value: 0, unit: Pt},
-    right: {value: 0, unit: Pt},
-    bottom: {value: 0, unit: Pt},
-    left: {value: 0, unit: Pt},
+    top: {value: 0, unit: Pt, remoteSaved: true},
+    right: {value: 0, unit: Pt, remoteSaved: true},
+    bottom: {value: 0, unit: Pt, remoteSaved: true},
+    left: {value: 0, unit: Pt, remoteSaved: true},
   }
 
   let reducer = (state, action) => {
     switch action {
+    | Initialize(t) => t
     | AlterValue(side, value, unit) =>
       switch side {
-      | Top => {...state, top: {value: value, unit: unit}}
-      | Right => {...state, right: {value: value, unit: unit}}
-      | Bottom => {...state, bottom: {value: value, unit: unit}}
-      | Left => {...state, left: {value: value, unit: unit}}
+      | Top => {...state, top: {value: value, unit: unit, remoteSaved: false}}
+      | Right => {...state, right: {value: value, unit: unit, remoteSaved: false}}
+      | Bottom => {...state, bottom: {value: value, unit: unit, remoteSaved: false}}
+      | Left => {...state, left: {value: value, unit: unit, remoteSaved: false}}
       }
-    | Initialize(t) => t
+    | SaveRemote => {
+        top: {...state.top, remoteSaved: true},
+        right: {...state.right, remoteSaved: true},
+        bottom: {...state.bottom, remoteSaved: true},
+        left: {...state.left, remoteSaved: true},
+      }
     }
   }
 

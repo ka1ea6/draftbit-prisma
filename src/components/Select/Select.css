@@ -14,15 +14,16 @@
   border-radius: 10px;
   overflow: hidden;
   /* transform: translateY(10px); */
-  animation: 0.1s  ease-in forwards slide-in;
+  animation: 0.1s ease-in forwards slide-in;
 }
 
 @keyframes slide-in {
-   from {
+  from {
     transform: translateY(-5px);
-   } to {
+  }
+  to {
     transform: translateY(5px);
-   }
+  }
 }
 
 .dropdown-open li:hover {
@@ -39,9 +40,10 @@
   position: relative;
 }
 
-.dropdown-container button {
+.dropdown-container > button {
   border: none;
   background-color: inherit;
   color: inherit;
   cursor: pointer;
+  padding: 0;
 }

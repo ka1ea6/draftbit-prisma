@@ -14,6 +14,7 @@ let make = (
   ~setIsSelectOpen: (bool => bool) => unit,
   ~unit: Dimension.State.measurementUnit,
   ~onUnitChange,
+  ~selectShown: bool,
 ) => {
   React.useEffect(() => {
     let handleClick = e => {
@@ -33,41 +34,45 @@ let make = (
     Some(() => Webapi.Dom.window->Webapi.Dom.Window.removeEventListener("click", handleClick))
   })
 
-  <div>
+  if selectShown {
     <div>
-      <select className="hidden">
-        {Dimension.State.allUnits
-        ->Js.Array2.map(option =>
-          <option
-            value={option->Dimension.State.measurementUnitToString}
-            key={option->Dimension.State.measurementUnitToString}>
-            {option->Dimension.State.measurementUnitToString->React.string}
-          </option>
-        )
-        ->React.array}
-      </select>
+      <div>
+        <select className="hidden">
+          {Dimension.State.allUnits
+          ->Js.Array2.map(option =>
+            <option
+              value={option->Dimension.State.measurementUnitToString}
+              key={option->Dimension.State.measurementUnitToString}>
+              {option->Dimension.State.measurementUnitToString->React.string}
+            </option>
+          )
+          ->React.array}
+        </select>
+      </div>
+      <div className="dropdown-container" id=name>
+        <button onClick={_ => setIsSelectOpen(_ => true)}>
+          {unit->Dimension.State.measurementUnitToString->React.string}
+        </button>
+        <ul className={isSelectOpen ? "dropdown-open" : "dropdown-close"}>
+          {Dimension.State.allUnits
+          ->Js.Array2.map(option =>
+            <li
+              value={option->Dimension.State.measurementUnitToString}
+              key={option->Dimension.State.measurementUnitToString}>
+              <button
+                onClick={_e => {
+                  onUnitChange(option)
+                  setIsSelectOpen(_ => false)
+                }}>
+                {React.string(option->Dimension.State.measurementUnitToString)}
+              </button>
+            </li>
+          )
+          ->React.array}
+        </ul>
+      </div>
     </div>
-    <div className="dropdown-container" id=name>
-      <button onClick={_ => setIsSelectOpen(_ => true)}>
-        {unit->Dimension.State.measurementUnitToString->React.string}
-      </button>
-      <ul className={isSelectOpen ? "dropdown-open" : "dropdown-close"}>
-        {Dimension.State.allUnits
-        ->Js.Array2.map(option =>
-          <li
-            value={option->Dimension.State.measurementUnitToString}
-            key={option->Dimension.State.measurementUnitToString}>
-            <button
-              onClick={_e => {
-                onUnitChange(option)
-                setIsSelectOpen(_ => false)
-              }}>
-              {React.string(option->Dimension.State.measurementUnitToString)}
-            </button>
-          </li>
-        )
-        ->React.array}
-      </ul>
-    </div>
-  </div>
+  } else {
+    <> </>
+  }
 }
