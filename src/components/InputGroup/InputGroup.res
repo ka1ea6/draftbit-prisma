@@ -1,3 +1,5 @@
+%%raw("import './InputGroup.css';")
+
 @react.component
 let make = (
   ~name: string,

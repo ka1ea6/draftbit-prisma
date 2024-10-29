@@ -26,7 +26,7 @@ module ViewExamples = {
 
   @react.component
   let make = () => {
-    let (examples: option<array<example>>, setExamples) = React.useState(_ => None)
+    let (_: option<array<example>>, setExamples) = React.useState(_ => None)
 
     React.useEffect1(() => {
       Js.Console.log("Fetching data")

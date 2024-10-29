@@ -9,6 +9,23 @@ module State = {
     remoteSaved: bool,
   }
 
+  type responseMeasurement = {
+    value: measurementValue,
+    unit: string,
+  }
+
+  type responseDimensions = {
+    top: responseMeasurement,
+    right: responseMeasurement,
+    bottom: responseMeasurement,
+    left: responseMeasurement,
+  }
+
+  type dimensionResponse = {
+    margin: responseDimensions,
+    padding: responseDimensions,
+  }
+
   type t = {
     top: measurement,
     right: measurement,
@@ -58,5 +75,61 @@ module State = {
     | "px" => Px
     | _ => Pt
     }
+  }
+
+  let normalizeDimensionResponse = (response: responseDimensions): t => {
+    let normalized: t = {
+      top: {
+        value: response.top.value,
+        unit: response.top.unit->stringToMeasurementUnit,
+        remoteSaved: true,
+      },
+      right: {
+        value: response.right.value,
+        unit: response.right.unit->stringToMeasurementUnit,
+        remoteSaved: true,
+      },
+      bottom: {
+        value: response.bottom.value,
+        unit: response.bottom.unit->stringToMeasurementUnit,
+        remoteSaved: true,
+      },
+      left: {
+        value: response.left.value,
+        unit: response.left.unit->stringToMeasurementUnit,
+        remoteSaved: true,
+      },
+    }
+
+    normalized
+  }
+  let normalizeDimensionRequest = (request: t): responseDimensions => {
+    let normalized: responseDimensions = {
+      top: {
+        value: request.top.value,
+        unit: request.top.unit->measurementUnitToString,
+      },
+      right: {
+        value: request.right.value,
+        unit: request.right.unit->measurementUnitToString,
+      },
+      bottom: {
+        value: request.bottom.value,
+        unit: request.bottom.unit->measurementUnitToString,
+      },
+      left: {
+        value: request.left.value,
+        unit: request.left.unit->measurementUnitToString,
+      },
+    }
+
+    normalized
+  }
+
+  let checkHasChanged = (dimensions: t) => {
+    !dimensions.top.remoteSaved ||
+    !dimensions.right.remoteSaved ||
+    !dimensions.bottom.remoteSaved ||
+    !dimensions.left.remoteSaved
   }
 }
