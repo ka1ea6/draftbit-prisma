@@ -8,7 +8,13 @@
 CREATE TYPE unit AS ENUM('pt', 'px');
 
 
-CREATE TABLE padding_dimensions (
+
+CREATE TABLE items (
+    id SERIAL PRIMARY KEY,
+    name TEXT
+);
+
+CREATE TABLE dimensions (
     id SERIAL PRIMARY KEY,
     padding_top INT,
     padding_top_unit unit,
@@ -17,26 +23,24 @@ CREATE TABLE padding_dimensions (
     padding_right INT,
     padding_right_unit unit,
     padding_bottom INT,
-    padding_bottom_unit unit
-);
-
-CREATE TABLE margin_dimensions (
-    id SERIAL PRIMARY KEY,
-    margin_top_value INT,
+    padding_bottom_unit unit,
+    margin_top INT,
     margin_top_unit unit,
     margin_left INT,
-    padding_left_unit unit,
+    margin_left_unit unit,
     margin_right INT,
-    padding_right_unit unit,
+    margin_right_unit unit,
     margin_bottom INT,
-    padding_bottom_unit unit
+    margin_bottom_unit unit,
+    item_id INT,
+    CONSTRAINT fk_items_id FOREIGN KEY (item_id) REFERENCES items(id) ON DELETE CASCADE
 );
 
+-- CREATE TABLE margin_dimensions (
+--     id SERIAL PRIMARY KEY,
+-- );
 
-CREATE TABLE item (
-    id SERIAL PRIMARY KEY,
-    margin_dimensions_id INT,
-    padding_dimensions_id INT,
-    CONSTRAINT fk_margin_dimensions_id FOREIGN KEY (margin_dimensions_id) REFERENCES margin_dimensions(id) ON DELETE CASCADE,
-    CONSTRAINT fk_padding_dimensions_id FOREIGN KEY (padding_dimensions_id) REFERENCES padding_dimensions(id) ON DELETE CASCADE
-);
+
+
+
+

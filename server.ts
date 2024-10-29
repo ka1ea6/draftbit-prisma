@@ -1,10 +1,11 @@
 import "dotenv/config";
 import { Client } from "pg";
-import { backOff } from "exponential-backoff";
 import express from "express";
 import waitOn from "wait-on";
 import onExit from "signal-exit";
 import cors from "cors";
+import { insertIntoTable } from "./db-helpers";
+import { mapDimensions } from "./utils";
 
 // Add your routes here
 const setupApp = (client: Client): express.Application => {
@@ -14,9 +15,111 @@ const setupApp = (client: Client): express.Application => {
 
   app.use(express.json());
 
-  app.get("/dimensions", async (_req, res) => {
-    const { rows } = await client.query(`SELECT * FROM margin_dimensions`);
-    res.json(rows);
+  app.post("/items", async (req, res) => {
+    console.log(req.body);
+    let { name }: { name: string } = req.body;
+    if (!name || typeof name !== "string") name = "";
+
+    const {
+      rows: [item],
+    } = await insertIntoTable({
+      client,
+      columns: ["name"],
+      returning: ["*"],
+      tableName: "items",
+      values: [name],
+    });
+
+    res.status(201).json(item);
+  });
+
+  // get dimensions for a
+  app.get("/items/:itemId/dimensions", async (req, res) => {
+    try {
+      const itemId = req.params.itemId;
+      if (!itemId || isNaN(parseInt(itemId)))
+        return res.status(400).json({
+          status: 400,
+          ok: false,
+          statusText: "failure",
+          message: "invalid item id",
+        });
+
+      const { rowCount } = await client.query(
+        `SELECT id FROM items WHERE id=$1`,
+        [parseInt(req.params.itemId)]
+      );
+
+      if (!rowCount || rowCount === 0)
+        return res.status(400).json({
+          status: 400,
+          ok: false,
+          statusText: "failure",
+          message: "invalid item id",
+        });
+
+      // checking to see if there is already a dimensions entry for that item
+      const {
+        rows: [dimensions],
+      } = await client.query(
+        `
+        SELECT * FROM dimensions WHERE item_id=$1
+        `,
+        [itemId]
+      );
+
+      if (dimensions) return res.status(200).json(mapDimensions(dimensions));
+
+      const {
+        rows: [newDimensions],
+      } = await insertIntoTable({
+        client,
+        tableName: "dimensions",
+        columns: [
+          "padding_top",
+          "padding_top_unit",
+          "padding_right",
+          "padding_right_unit",
+          "padding_bottom",
+          "padding_bottom_unit",
+          "padding_left",
+          "padding_left_unit",
+          "margin_top",
+          "margin_top_unit",
+          "margin_right",
+          "margin_right_unit",
+          "margin_bottom",
+          "margin_bottom_unit",
+          "margin_left",
+          "margin_left_unit",
+          "item_id",
+        ],
+        values: [
+          "0",
+          "px",
+          "0",
+          "px",
+          "0",
+          "px",
+          "0",
+          "px",
+          "0",
+          "px",
+          "0",
+          "px",
+          "0",
+          "px",
+          "0",
+          "px",
+          itemId,
+        ],
+        returning: ["*"],
+      });
+
+      return res.status(201).json(mapDimensions(newDimensions));
+    } catch (err) {
+      await client.query("ROLLBACK");
+    }
   });
 
   app.post("/dimensions", async (req, res) => {

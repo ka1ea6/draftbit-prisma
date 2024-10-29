@@ -24,7 +24,7 @@ let make = (
         ->Webapi.Dom.Element.closest(`.dropdown-container#${name}`)
 
       switch closestDropdownContainer {
-      | Some(element) => Js.Console.log(element)
+      | Some(_) => ()
       | None => setIsSelectOpen(_ => false)
       }
     }

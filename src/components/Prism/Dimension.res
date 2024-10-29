@@ -15,7 +15,7 @@ module State = {
     left: measurement,
   }
 
-  type actions = AlterValue(side, measurementValue, measurementUnit)
+  type actions = AlterValue(side, measurementValue, measurementUnit) | Initialize(t)
 
   let initialValue = {
     top: {value: 0, unit: Pt},
@@ -33,6 +33,7 @@ module State = {
       | Bottom => {...state, bottom: {value: value, unit: unit}}
       | Left => {...state, left: {value: value, unit: unit}}
       }
+    | Initialize(t) => t
     }
   }
 
@@ -42,6 +43,13 @@ module State = {
     switch unit {
     | Px => "px"
     | Pt => "pt"
+    }
+  }
+
+  let stringToMeasurementUnit = (unit: string) => {
+    switch unit->Js.String.toLowerCase {
+    | "px" => Px
+    | _ => Pt
     }
   }
 }

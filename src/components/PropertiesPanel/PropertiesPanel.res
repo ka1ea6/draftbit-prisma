@@ -29,8 +29,9 @@ module ViewExamples = {
     let (examples: option<array<example>>, setExamples) = React.useState(_ => None)
 
     React.useEffect1(() => {
+      Js.Console.log("Fetching data")
       // Fetch the data from /examples and set the state when the promise resolves
-      Fetch.fetchJson(`http://localhost:12346/examples`)
+      Fetch.fetchJson(`${Fetch.base_url}/items/1/dimensions`)
       |> Js.Promise.then_(examplesJson => {
         // NOTE: this uses an unsafe type cast, as safely parsing JSON in rescript is somewhat advanced.
         Js.Promise.resolve(setExamples(_ => Some(Obj.magic(examplesJson))))
@@ -40,26 +41,14 @@ module ViewExamples = {
       None
     }, [setExamples])
 
-    <div>
-      {switch examples {
-      | None => React.string("Loading examples....")
-      | Some(examples) =>
-        examples
-        ->Js.Array2.map(example =>
-          React.string(`Int: ${example.some_int->Js.Int.toString}, Str: ${example.some_text}`)
-        )
-        ->React.array
-      }}
-    </div>
+    <div />
   }
-} 
+}
 
 @genType @genType.as("PropertiesPanel") @react.component
 let make = () =>
   <aside className="PropertiesPanel">
     <Collapsible title="Load examples"> <ViewExamples /> </Collapsible>
-    <Collapsible title="Margins & Padding">
-      <span> <Prism /> </span>
-    </Collapsible>
+    <Collapsible title="Margins & Padding"> <span> <Prism /> </span> </Collapsible>
     <Collapsible title="Size"> <span> {React.string("example")} </span> </Collapsible>
   </aside>
